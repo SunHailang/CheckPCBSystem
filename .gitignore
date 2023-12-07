@@ -1,0 +1,10 @@
+#####################
+
+
+/Library/
+.vs/
+/Temp/
+
+
+/CheckPCBSystem/bin/
+/CheckPCBSystem/obj/
