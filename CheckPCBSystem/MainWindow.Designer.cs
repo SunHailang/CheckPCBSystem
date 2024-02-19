@@ -31,10 +31,6 @@ namespace CheckPCBSystem
         {
             this.components = new System.ComponentModel.Container();
             this.pictureBoxTarget = new System.Windows.Forms.PictureBox();
-            this.buttonOpen = new System.Windows.Forms.Button();
-            this.buttonCamera = new System.Windows.Forms.Button();
-            this.comboBoxCamera = new System.Windows.Forms.ComboBox();
-            this.comboBoxResoulution = new System.Windows.Forms.ComboBox();
             this.btnSaveShoot = new System.Windows.Forms.Button();
             this.timerShowShoot = new System.Windows.Forms.Timer(this.components);
             this.dataGridViewResult = new System.Windows.Forms.DataGridView();
@@ -44,6 +40,9 @@ namespace CheckPCBSystem
             this.menuStripMainWindow = new System.Windows.Forms.MenuStrip();
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ModifyFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SelectImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenCameraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SelectVideoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,10 +52,12 @@ namespace CheckPCBSystem
             this.comboBoxModel = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.vlcControlPlay = new Vlc.DotNet.Forms.VlcControl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTarget)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewResult)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSource)).BeginInit();
             this.menuStripMainWindow.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.vlcControlPlay)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBoxTarget
@@ -68,47 +69,6 @@ namespace CheckPCBSystem
             this.pictureBoxTarget.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxTarget.TabIndex = 0;
             this.pictureBoxTarget.TabStop = false;
-            // 
-            // buttonOpen
-            // 
-            this.buttonOpen.Location = new System.Drawing.Point(22, 35);
-            this.buttonOpen.Name = "buttonOpen";
-            this.buttonOpen.Size = new System.Drawing.Size(75, 23);
-            this.buttonOpen.TabIndex = 1;
-            this.buttonOpen.Text = "选择图片";
-            this.buttonOpen.UseVisualStyleBackColor = true;
-            this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
-            // 
-            // buttonCamera
-            // 
-            this.buttonCamera.Location = new System.Drawing.Point(123, 34);
-            this.buttonCamera.Name = "buttonCamera";
-            this.buttonCamera.Size = new System.Drawing.Size(75, 23);
-            this.buttonCamera.TabIndex = 2;
-            this.buttonCamera.Text = "打开相机";
-            this.buttonCamera.UseVisualStyleBackColor = true;
-            this.buttonCamera.Visible = false;
-            this.buttonCamera.Click += new System.EventHandler(this.buttonCamera_Click);
-            // 
-            // comboBoxCamera
-            // 
-            this.comboBoxCamera.FormattingEnabled = true;
-            this.comboBoxCamera.Location = new System.Drawing.Point(226, 36);
-            this.comboBoxCamera.Name = "comboBoxCamera";
-            this.comboBoxCamera.Size = new System.Drawing.Size(121, 20);
-            this.comboBoxCamera.TabIndex = 3;
-            this.comboBoxCamera.Visible = false;
-            this.comboBoxCamera.SelectedIndexChanged += new System.EventHandler(this.comboBoxCamera_SelectedIndexChanged);
-            // 
-            // comboBoxResoulution
-            // 
-            this.comboBoxResoulution.FormattingEnabled = true;
-            this.comboBoxResoulution.Location = new System.Drawing.Point(362, 36);
-            this.comboBoxResoulution.Name = "comboBoxResoulution";
-            this.comboBoxResoulution.Size = new System.Drawing.Size(71, 20);
-            this.comboBoxResoulution.TabIndex = 4;
-            this.comboBoxResoulution.Visible = false;
-            this.comboBoxResoulution.SelectedIndexChanged += new System.EventHandler(this.comboBoxResoulution_SelectedIndexChanged);
             // 
             // btnSaveShoot
             // 
@@ -165,7 +125,7 @@ namespace CheckPCBSystem
             this.btnCheck.Name = "btnCheck";
             this.btnCheck.Size = new System.Drawing.Size(75, 23);
             this.btnCheck.TabIndex = 1;
-            this.btnCheck.Text = "检测图片";
+            this.btnCheck.Text = "检测";
             this.btnCheck.UseVisualStyleBackColor = true;
             this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
             // 
@@ -186,7 +146,10 @@ namespace CheckPCBSystem
             // FileToolStripMenuItem
             // 
             this.FileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ModifyFileToolStripMenuItem});
+            this.ModifyFileToolStripMenuItem,
+            this.SelectImageToolStripMenuItem,
+            this.OpenCameraToolStripMenuItem,
+            this.SelectVideoToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
             this.FileToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.FileToolStripMenuItem.Text = "文件";
@@ -194,10 +157,30 @@ namespace CheckPCBSystem
             // ModifyFileToolStripMenuItem
             // 
             this.ModifyFileToolStripMenuItem.Name = "ModifyFileToolStripMenuItem";
-            this.ModifyFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ModifyFileToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.ModifyFileToolStripMenuItem.Text = "修改文件名";
             this.ModifyFileToolStripMenuItem.Visible = false;
             this.ModifyFileToolStripMenuItem.Click += new System.EventHandler(this.ModifyFileToolStripMenuItem_Click);
+            // 
+            // SelectImageToolStripMenuItem
+            // 
+            this.SelectImageToolStripMenuItem.Name = "SelectImageToolStripMenuItem";
+            this.SelectImageToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.SelectImageToolStripMenuItem.Text = "选择图片";
+            this.SelectImageToolStripMenuItem.Click += new System.EventHandler(this.SelectImageToolStripMenuItem_Click);
+            // 
+            // OpenCameraToolStripMenuItem
+            // 
+            this.OpenCameraToolStripMenuItem.Name = "OpenCameraToolStripMenuItem";
+            this.OpenCameraToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.OpenCameraToolStripMenuItem.Text = "打开摄像头";
+            // 
+            // SelectVideoToolStripMenuItem
+            // 
+            this.SelectVideoToolStripMenuItem.Name = "SelectVideoToolStripMenuItem";
+            this.SelectVideoToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.SelectVideoToolStripMenuItem.Text = "选择视频";
+            this.SelectVideoToolStripMenuItem.Click += new System.EventHandler(this.SelectVideoToolStripMenuItem_Click);
             // 
             // ViewToolStripMenuItem
             // 
@@ -216,7 +199,7 @@ namespace CheckPCBSystem
             // historyToolStripMenuItem
             // 
             this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
-            this.historyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.historyToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.historyToolStripMenuItem.Text = "查看历史记录";
             this.historyToolStripMenuItem.Click += new System.EventHandler(this.historyToolStripMenuItem_Click);
             // 
@@ -245,7 +228,7 @@ namespace CheckPCBSystem
             // comboBoxModel
             // 
             this.comboBoxModel.FormattingEnabled = true;
-            this.comboBoxModel.Location = new System.Drawing.Point(123, 37);
+            this.comboBoxModel.Location = new System.Drawing.Point(123, 36);
             this.comboBoxModel.Name = "comboBoxModel";
             this.comboBoxModel.Size = new System.Drawing.Size(121, 20);
             this.comboBoxModel.TabIndex = 11;
@@ -258,7 +241,7 @@ namespace CheckPCBSystem
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 12;
-            this.label1.Text = "源图片：";
+            this.label1.Text = "源文件：";
             // 
             // label2
             // 
@@ -269,11 +252,26 @@ namespace CheckPCBSystem
             this.label2.TabIndex = 12;
             this.label2.Text = "检测结果：";
             // 
+            // vlcControlPlay
+            // 
+            this.vlcControlPlay.BackColor = System.Drawing.Color.Black;
+            this.vlcControlPlay.Location = new System.Drawing.Point(97, 301);
+            this.vlcControlPlay.Name = "vlcControlPlay";
+            this.vlcControlPlay.Size = new System.Drawing.Size(300, 220);
+            this.vlcControlPlay.Spu = -1;
+            this.vlcControlPlay.TabIndex = 13;
+            this.vlcControlPlay.Text = "视频播放";
+            this.vlcControlPlay.Visible = false;
+            this.vlcControlPlay.VlcLibDirectory = null;
+            this.vlcControlPlay.VlcMediaplayerOptions = null;
+            this.vlcControlPlay.VlcLibDirectoryNeeded += new System.EventHandler<Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs>(this.vlcControlPlay_VlcLibDirectoryNeeded);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(867, 598);
+            this.Controls.Add(this.vlcControlPlay);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxModel);
@@ -281,11 +279,7 @@ namespace CheckPCBSystem
             this.Controls.Add(this.dataGridViewResult);
             this.Controls.Add(this.btnSaveShoot);
             this.Controls.Add(this.videoSourcePlayer);
-            this.Controls.Add(this.comboBoxResoulution);
-            this.Controls.Add(this.comboBoxCamera);
-            this.Controls.Add(this.buttonCamera);
             this.Controls.Add(this.btnCheck);
-            this.Controls.Add(this.buttonOpen);
             this.Controls.Add(this.pictureBoxSource);
             this.Controls.Add(this.pictureBoxTarget);
             this.Controls.Add(this.menuStripMainWindow);
@@ -302,6 +296,7 @@ namespace CheckPCBSystem
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSource)).EndInit();
             this.menuStripMainWindow.ResumeLayout(false);
             this.menuStripMainWindow.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.vlcControlPlay)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -310,10 +305,6 @@ namespace CheckPCBSystem
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBoxTarget;
-        private System.Windows.Forms.Button buttonOpen;
-        private System.Windows.Forms.Button buttonCamera;
-        private System.Windows.Forms.ComboBox comboBoxCamera;
-        private System.Windows.Forms.ComboBox comboBoxResoulution;
         private System.Windows.Forms.Button btnSaveShoot;
         private System.Windows.Forms.Timer timerShowShoot;
         private System.Windows.Forms.DataGridView dataGridViewResult;
@@ -332,5 +323,9 @@ namespace CheckPCBSystem
         private System.Windows.Forms.ComboBox comboBoxModel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ToolStripMenuItem SelectImageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OpenCameraToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SelectVideoToolStripMenuItem;
+        private Vlc.DotNet.Forms.VlcControl vlcControlPlay;
     }
 }

@@ -28,6 +28,7 @@ namespace CheckPCBSystem.UGUI
                 {
                     Application.Run(curForm);
                 });
+                //Application.Run(curForm);
                 curForm.StartPosition = FormStartPosition.CenterScreen;
                 th.SetApartmentState(ApartmentState.STA);
                 th.Start();
