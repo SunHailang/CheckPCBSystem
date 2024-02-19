@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CheckPCBSystem
 {
+
+    public class HistoryFileData
+    {
+        public string FileName;
+    }
+
     public class ResultData : IDisposable
     {
         public int Index;
@@ -21,6 +23,11 @@ namespace CheckPCBSystem
             StartPos = default;
             EndPos = default;
             Level = 0f;
+        }
+
+        public override string ToString()
+        {
+            return $"ID:{Data}{Environment.NewLine}Position:{StartPos},{EndPos}{Environment.NewLine}Level:{Level}";
         }
     }
 }

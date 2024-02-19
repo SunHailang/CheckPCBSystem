@@ -16,7 +16,12 @@ namespace CheckPCBSystem
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Login());
+
+            Control.CheckForIllegalCrossThreadCalls = false;
+
+            //Application.Run(new Login());
+            Login login = new Login();
+            login.ShowDialog();
         }
     }
 }
