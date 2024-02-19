@@ -5,6 +5,8 @@
 .vs/
 /Temp/
 
+/packages/
+
 
 /CheckPCBSystem/bin/
 /CheckPCBSystem/obj/
