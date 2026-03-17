@@ -388,6 +388,9 @@ namespace CheckPCBSystem
             // 刷新Result
             RefreshResultDataView();
 
+            // 检测完成后自动发送邮件通知
+            EmailService.SendDetectionEmailAsync(UserName, fileName, resultDataList);
+
             this.timerDelay.Enabled = false;
         }
 
