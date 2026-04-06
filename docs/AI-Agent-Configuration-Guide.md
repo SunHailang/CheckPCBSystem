@@ -1,6 +1,8 @@
 # AI Agent 配置指南
 
-> 本文档介绍如何在 CheckPCBSystem（PCB 缺陷检测系统）中配置和使用 AI Agent（YOLO 目标检测模型），以实现自动化 PCB 缺陷检测。
+> 本文档介绍如何在 CheckPCBSystem（缺陷检测系统）中配置和使用 AI Agent（YOLO 目标检测模型），以实现自动化路面/表面缺陷检测。
+>
+> **注意：** 虽然项目名为 "CheckPCBSystem"，但当前系统的检测类别和数据集面向**路面缺陷检测**场景（如裂缝、坑洞等）。该架构同样适用于 PCB 缺陷检测，只需替换模型和检测类别即可。
 
 ---
 
@@ -19,7 +21,7 @@
 
 ## 1. 系统概述
 
-CheckPCBSystem 是一个基于 Windows Forms 的 PCB 缺陷检测桌面应用程序。系统通过集成 YOLO 系列目标检测模型，对 PCB 图像进行自动化缺陷识别与分类。
+CheckPCBSystem 是一个基于 Windows Forms 的缺陷检测桌面应用程序。系统通过集成 YOLO 系列目标检测模型，对图像进行自动化缺陷识别与分类。当前配置面向路面缺陷检测，同时支持扩展到 PCB 等其他检测场景。
 
 ### 系统架构
 
@@ -47,7 +49,7 @@ CheckPCBSystem 是一个基于 Windows Forms 的 PCB 缺陷检测桌面应用程
 | **MainWindow** | 主检测界面，负责图像选择、模型选择和结果展示 |
 | **YOLO 推理引擎** | 外部 Python 推理进程，执行目标检测 |
 | **ResultData** | 检测结果数据模型，包含缺陷类型、位置、置信度 |
-| **MySqlData** | 数据库连接层，管理用户认证 |
+| **MySqlData** | 数据库连接层，管理用户认证（数据库名：`YoloCheckRoad`） |
 | **GetVideo.py** | Python 摄像头采集脚本，支持实时视频输入 |
 
 ---
@@ -194,14 +196,14 @@ results = model.predict(
 
 ## 4. 检测类别说明
 
-系统当前配置了以下缺陷检测类别：
+系统当前配置了以下路面缺陷检测类别（可根据实际场景替换为 PCB 等其他类别）：
 
 | 类别 ID | 类别名称 | 英文描述 | 说明 |
 |---------|---------|---------|------|
-| 0 | 纵向裂缝 | Longitudinal Crack | 沿 PCB 纵向方向的裂缝缺陷 |
-| 1 | 横向裂缝 | Transverse Crack | 沿 PCB 横向方向的裂缝缺陷 |
+| 0 | 纵向裂缝 | Longitudinal Crack | 沿纵向方向的裂缝缺陷 |
+| 1 | 横向裂缝 | Transverse Crack | 沿横向方向的裂缝缺陷 |
 | 2 | 龟裂裂缝 | Alligator Crack | 网状分布的龟裂缺陷 |
-| 3 | 坑洞 | Pothole | PCB 表面的坑洞缺陷 |
+| 3 | 坑洞 | Pothole | 表面的坑洞缺陷 |
 | 4 | 修补 | Patch | 已修补的区域标记 |
 | 5 | 未知 | Unknown | 无法归类的未知缺陷 |
 
@@ -211,7 +213,7 @@ results = model.predict(
 
 1. **更新模型训练数据集** —— 在 YOLO 数据集配置中添加新类别
 2. **重新训练模型** —— 使用包含新类别的数据集训练模型
-3. **更新 C# 代码中的类别映射** —— 修改 `MainWindow.cs` 中的 `RoadDefectList` 数组：
+3. **更新 C# 代码中的类别映射** —— 修改 `MainWindow.cs` 中的 `RoadDefectList`（路面缺陷列表）数组：
 
 ```csharp
 // MainWindow.cs 中的类别列表
@@ -251,7 +253,7 @@ private string[] RoadDefectList = new string[]
 
 ```python
 #!/usr/bin/env python3
-"""PCB 缺陷检测推理脚本"""
+"""缺陷检测推理脚本"""
 
 import sys
 import os
@@ -261,7 +263,7 @@ from ultralytics import YOLO
 
 def predict(image_path: str, model_path: str, output_dir: str):
     """
-    执行 PCB 缺陷检测推理。
+    执行缺陷检测推理。
 
     Args:
         image_path: 待检测图像路径
@@ -307,7 +309,7 @@ if __name__ == "__main__":
 
 ### 5.3 摄像头实时检测配置
 
-系统支持通过摄像头进行实时 PCB 检测：
+系统支持通过摄像头进行实时检测：
 
 1. **连接摄像头** —— 将 USB 摄像头或工业相机连接到计算机
 2. **设备识别** —— 系统通过 AForge.NET 的 DirectShow 自动识别可用摄像头设备
@@ -401,8 +403,8 @@ cv2.destroyAllWindows()
 创建符合 YOLO 格式的数据集配置文件 `pcb_dataset.yaml`：
 
 ```yaml
-# PCB 缺陷检测数据集配置
-path: /path/to/pcb_dataset     # 数据集根目录
+# 缺陷检测数据集配置
+path: /path/to/dataset          # 数据集根目录
 train: images/train             # 训练图像目录
 val: images/val                 # 验证图像目录
 test: images/test               # 测试图像目录（可选）
@@ -598,7 +600,7 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 **解决方案：**
 - 确认输入图像质量良好（无过度模糊或曝光不当）
 - 检查置信度阈值是否设置过高
-- 验证模型是否针对当前类型的 PCB 进行过训练
+- 验证模型是否针对当前检测场景进行过训练
 - 查看推理日志输出，确认推理过程正常完成
 
 ---
