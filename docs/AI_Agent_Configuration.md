@@ -151,7 +151,7 @@ USE YoloCheckRoad;
 CREATE TABLE IF NOT EXISTS UserTable (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(20) NOT NULL UNIQUE,
-  password VARCHAR(20) NOT NULL
+  password VARCHAR(255) NOT NULL COMMENT '应存储哈希值，推荐使用 bcrypt'
 );
 ```
 
@@ -163,9 +163,12 @@ CREATE TABLE IF NOT EXISTS UserTable (
 | Port | `3306` | 数据库端口 |
 | Database | `YoloCheckRoad` | 数据库名称 |
 | User | `root` | 数据库用户名 |
-| Password | `123` | 数据库密码 |
+| Password | `<your_secure_password>` | 数据库密码 |
 
-> ⚠️ **安全提示**：生产环境中请务必更改默认数据库密码，并使用参数化查询防止 SQL 注入。
+> ⚠️ **安全提示**：
+> - 生产环境中请务必使用强密码，切勿使用简单密码（如 `123`）。
+> - 建议使用参数化查询防止 SQL 注入攻击。
+> - 建议对用户密码进行哈希处理（如使用 bcrypt），而非明文存储。数据库中密码字段应使用 `VARCHAR(255)` 以容纳哈希值。
 
 ---
 
